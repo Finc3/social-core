@@ -10,7 +10,7 @@ class MailChimpOAuth2(BaseOAuth2):
     ACCESS_TOKEN_METHOD = 'POST'
     STATE_PARAMETER = False
     REDIRECT_STATE = False
-    ID_KEY = 'user_id'
+    ID_KEY = 'login_id'
     EXTRA_DATA = [
         ('accountname', 'accountname'),
         ('api_endpoint', 'api_endpoint'),
@@ -30,3 +30,8 @@ class MailChimpOAuth2(BaseOAuth2):
         return self.get_json(self.METADATA_URL, headers={
           'Authorization': 'OAuth ' + access_token
         })
+
+    def get_user_id(self, details, response):
+        """Return a unique ID for the current user
+        """
+        return response['login'][self.ID_KEY]
